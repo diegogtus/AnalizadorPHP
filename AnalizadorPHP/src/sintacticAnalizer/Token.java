@@ -3,19 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package analizadorphp;
+package sintacticAnalizer;
 
 /**
  *
  * @author diego
  */
-public class AnalizadorPHP {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
+public enum Token {
+    RESERVED, TYPE, ID, INT, VAR, CONSTANT, ASSIGN, EQUALS, PLUS, MINUS, 
+    MULTIPLE, DIVIDED, NOT, AND, OR, COMMA, SEMICOLON, DOUBLE_QUOTE, ERROR
     
 }
