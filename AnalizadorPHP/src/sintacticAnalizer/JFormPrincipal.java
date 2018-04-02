@@ -5,13 +5,18 @@
  */
 package sintacticAnalizer;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -44,7 +49,7 @@ public class JFormPrincipal extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         txtAreaVer = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtAreaRes = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -58,6 +63,11 @@ public class JFormPrincipal extends javax.swing.JFrame {
         txtFieldRuta.setEditable(false);
 
         btnAnalizar.setText("Analizar");
+        btnAnalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnalizarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Ruta:");
 
@@ -69,9 +79,9 @@ public class JFormPrincipal extends javax.swing.JFrame {
         txtAreaVer.setRows(5);
         jScrollPane3.setViewportView(txtAreaVer);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtAreaRes.setColumns(20);
+        txtAreaRes.setRows(5);
+        jScrollPane1.setViewportView(txtAreaRes);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -138,6 +148,14 @@ public class JFormPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCargarActionPerformed
 
+    private void btnAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarActionPerformed
+        try {
+            Analizar();
+        } catch (IOException ex) {
+            Logger.getLogger(JFormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAnalizarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -176,7 +194,9 @@ public class JFormPrincipal extends javax.swing.JFrame {
         // muestra el cuadro de diálogo de archivos, para que el usuario pueda elegir el archivo a abrir
         JFileChooser selectorArchivos = new JFileChooser();
         selectorArchivos.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("PHP Hypertext Preprocessorfile", "php");
+        selectorArchivos.setFileFilter(filtro);
+        
         // indica cual fue la accion de usuario sobre el jfilechooser
         int resultado = selectorArchivos.showOpenDialog(this);
         
@@ -197,6 +217,27 @@ public class JFormPrincipal extends javax.swing.JFrame {
         
     }
     
+    public void Analizar() throws FileNotFoundException, IOException {
+        Reader reader = new BufferedReader(new FileReader(txtFieldRuta.getText()));
+        Lex lexer = new Lex(reader);
+        String resultado = "";
+        while(true){
+            Token token = lexer.yylex();
+            if (token == null) {
+                resultado = resultado + "FIN";
+                txtAreaRes.setText(resultado);
+                return;
+            }
+            switch(token){
+                case ERROR:
+                    resultado = resultado + "Error, simbolo desconocido \n";
+                    break;
+                default:
+                    resultado = resultado + "TOKEN: " + token + "\n";
+            }
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnalizar;
     private javax.swing.JButton btnCargar;
@@ -205,7 +246,7 @@ public class JFormPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea txtAreaRes;
     private javax.swing.JTextArea txtAreaVer;
     private javax.swing.JTextField txtFieldRuta;
     // End of variables declaration//GEN-END:variables
