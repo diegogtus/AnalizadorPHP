@@ -75,6 +75,7 @@ public class JFormPrincipal extends javax.swing.JFrame {
 
         jLabel3.setText("Resultado:");
 
+        txtAreaVer.setEditable(false);
         txtAreaVer.setColumns(20);
         txtAreaVer.setRows(5);
         jScrollPane3.setViewportView(txtAreaVer);
@@ -230,10 +231,10 @@ public class JFormPrincipal extends javax.swing.JFrame {
             }
             switch(token){
                 case ERROR:
-                    resultado = resultado + "Error, simbolo desconocido \n";
+                    resultado = resultado + "Error, simbolo desconocido"+ " " + lexer.lexeme + "\n";
                     break;
                 default:
-                    resultado = resultado + "TOKEN: " + token + "\n";
+                    resultado = resultado + "TOKEN: " + token + " " + lexer.lexeme +"\n";
             }
         }
     }
