@@ -62,6 +62,7 @@ PRE_VAR="Superglobals"|"$GLOBALS"|"$_SERVER"|"$_GET"|"$_POST"|"$_FILES"|"$_REQUE
 ("//".*)|("/*".*"*/")|("*".*)|("/*".*)|(.*"*/") {lexeme=yytext(); return COMMENT;}
 {WHITE} {/*Ignore*/}
 {WHITE}?{PUNT}{WHITE}? {lexeme=yytext(); return PUNTUACTION;}
+"$recordset["{ASCII}{ASCIIN}*"]" {lexeme=yytext(); return DB_ACCESS;}
 . {return ERROR;}
 
 
